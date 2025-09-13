@@ -47,6 +47,8 @@ public class PropertyController {
         }
     }
 
+
+
     // Update existing property (return DTO) - FIXED TO RETURN DTO
     @PutMapping("/{id}")
     public ResponseEntity<?> updateProperty(@PathVariable Long id, @RequestBody Property propertyDetails){

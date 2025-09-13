@@ -55,7 +55,9 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.dateJoined = dateJoined;
     }
-
+    public Long getId() {
+        return id;
+    }
     public void setFullName(String fullName) {
         this.fullName = fullName;
     }
@@ -112,4 +114,6 @@ public class User {
                 ", dateJoined=" + dateJoined +
                 '}';
     }
+
+
 }

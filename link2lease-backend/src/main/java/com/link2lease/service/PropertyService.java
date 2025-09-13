@@ -4,6 +4,7 @@ import com.link2lease.dto.PropertyDto;
 import com.link2lease.model.Property;
 import com.link2lease.model.User;
 import com.link2lease.repository.PropertyRepository;
+import com.link2lease.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,12 @@ import java.util.stream.Collectors;
 @Transactional
 public class PropertyService {
     private final PropertyRepository propertyRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public PropertyService(PropertyRepository propertyRepository){
+    public PropertyService(PropertyRepository propertyRepository,UserRepository userRepository){
         this.propertyRepository = propertyRepository;
+        this.userRepository = userRepository;
     }
 
     // --- Utility to convert entities -> DTOs ---
@@ -38,11 +41,29 @@ public class PropertyService {
         return propertyRepository.save(property);
     }
 
-    // NEW: Save property and return DTO
     public PropertyDto savePropertyDto(Property property){
-        Property savedProperty = saveProperty(property);
-        return toDto(savedProperty);
+        if (property.getLandlord() == null || property.getLandlord().getId() == null) {
+            throw new IllegalArgumentException("Property must have a landlord id");
+        }
+
+        // Fetch the managed landlord entity
+        Long landlordId = property.getLandlord().getId();
+        User landlord = userRepository.findById(landlordId)
+                .orElseThrow(() -> new IllegalArgumentException("Landlord not found with id: " + landlordId));
+
+        property.setLandlord(landlord); // assign managed entity
+
+        Property savedProperty = propertyRepository.save(property);
+        return new PropertyDto(savedProperty);
     }
+
+    // NEW: Save property and return DTO
+//    public PropertyDto savePropertyDto(Property property){
+//        Property savedProperty = saveProperty(property);
+//        return toDto(savedProperty);
+//    }
+
+
 
     public Property updateProperty(Long id, Property propertyDetails){
         Property property = propertyRepository.findById(id)
