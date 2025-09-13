@@ -1,6 +1,6 @@
 # Link2Lease 🏡
 
-Link2Lease is a Spring Boot backend for a housing platform designed to connect tenants directly with landlords—eliminating the need for traditional realtors. The goal is to make property discovery, communication, and scheduling more transparent and efficient.
+Link2Lease is a Spring Boot backend for a housing platform designed to connect tenants directly with landlords, eliminating the need for traditional realtors. The goal is to make property discovery, communication, and scheduling more transparent and efficient.
 
 ---
 
