@@ -15,41 +15,74 @@ import java.util.List;
 public class UserConfig {
 
     @Bean
-    @Order(1)
-    CommandLineRunner commandLineRunner(UserRepository repository){
+    @Order(1) // Run before properties
+    CommandLineRunner userCommandLineRunner(UserRepository userRepository) {
         return args -> {
-            if(repository.count() == 0){
-                // Original users
-                User tenant1 = new User("John Doe", "john@email.com", "password123",
-                        UserRole.TENANT, "+1234567890", LocalDate.now());
-
-                User landlord1 = new User("Jane Smith", "jane@email.com", "password456",
-                        UserRole.LANDLORD, "+1987654321", LocalDate.now());
-
-                User admin = new User("Admin User", "admin@email.com", "adminpass",
-                        UserRole.ADMIN, "+1111111111", LocalDate.now());
-
-                // Additional landlords
-                User landlord2 = new User("Mike Johnson", "mike@email.com", "pass789",
-                        UserRole.LANDLORD, "+2223334444", LocalDate.now());
-
-                User landlord3 = new User("Sara Williams", "sara@email.com", "pass101",
-                        UserRole.LANDLORD, "+5556667777", LocalDate.now());
-
-                // Additional tenants
-                User tenant2 = new User("Emily Brown", "emily@email.com", "pass202",
-                        UserRole.TENANT, "+8889990000", LocalDate.now());
-
-                repository.saveAll(List.of(
-                        tenant1, tenant2,
-                        landlord1, landlord2, landlord3,
-                        admin
-                ));
-
-                System.out.println("Sample users created: 3 landlords, 2 tenants, 1 admin.");
-            } else {
-                System.out.println("Users already exist. Skipping creation.");
+            // Create 3 landlords if they don't exist
+            if (userRepository.findUserByEmail("jane.smith@email.com").isEmpty()) {
+                User jane = new User(
+                        "Jane Smith",
+                        "jane.smith@email.com",
+                        "password123",
+                        UserRole.LANDLORD,
+                        "1234567890"
+                );
+                userRepository.save(jane);
             }
+            if (userRepository.findUserByEmail("mike.johnson@email.com").isEmpty()) {
+                User mike = new User(
+                        "Mike Johnson",
+                        "mike.johnson@email.com",
+                        "password123",
+                        UserRole.LANDLORD,
+                        "1234567890"
+                );
+                userRepository.save(mike);
+            }
+            if (userRepository.findUserByEmail("sara.williams@email.com").isEmpty()) {
+                User sara = new User(
+                        "Sara Williams",
+                        "sara.williams@email.com",
+                        "password123",
+                        UserRole.LANDLORD,
+                        "1234567890"
+                );
+                userRepository.save(sara);
+            }
+
+            // Optionally, create 3 tenants as well
+            if (userRepository.findUserByEmail("alice.tenant@email.com").isEmpty()) {
+                User alice = new User(
+                        "Alice Tenant",
+                        "alice.tenant@email.com",
+                        "password123",
+                        UserRole.TENANT,
+                        "0987654321"
+                );
+                userRepository.save(alice);
+            }
+            if (userRepository.findUserByEmail("bob.tenant@email.com").isEmpty()) {
+                User bob = new User(
+                        "Bob Tenant",
+                        "bob.tenant@email.com",
+                        "password123",
+                        UserRole.TENANT,
+                        "0987654322"
+                );
+                userRepository.save(bob);
+            }
+            if (userRepository.findUserByEmail("carol.tenant@email.com").isEmpty()) {
+                User carol = new User(
+                        "Carol Tenant",
+                        "carol.tenant@email.com",
+                        "password123",
+                        UserRole.TENANT,
+                        "0987654323"
+                );
+                userRepository.save(carol);
+            }
+
+            System.out.println("Sample users (landlords & tenants) created.");
         };
     }
 }

@@ -17,25 +17,23 @@ import java.util.List;
 public class PropertyConfig {
 
     @Bean
-    @Order(2)
-    CommandLineRunner propertyCommandLineRunner(PropertyRepository propertyRepository, UserRepository userRepository){
+    @Order(2) // Run after users
+    CommandLineRunner propertyCommandLineRunner(PropertyRepository propertyRepository, UserRepository userRepository) {
         return args -> {
-            List<User> landlords = userRepository.findAllByRole(UserRole.LANDLORD);
+            List<User> landlords = List.of(
+                    userRepository.findUserByEmail("jane.smith@email.com").get(),
+                    userRepository.findUserByEmail("mike.johnson@email.com").get(),
+                    userRepository.findUserByEmail("sara.williams@email.com").get()
+            );
 
-
-            if(landlords.isEmpty()){
-                System.out.println("No landlords found. Skipping property creation.");
-                return;
-            }
-
-            if(propertyRepository.count() == 0){
+            if (propertyRepository.count() == 0) {
                 Property property1 = new Property(
                         "Modern Downtown Apartment",
                         "Beautiful 2-bedroom apartment in the heart of downtown",
                         "123 Main Street, Downtown, City",
                         1800.00,
                         LocalDate.of(2025, 9, 1),
-                        landlords.get(0) // Jane Smith
+                        landlords.get(0)
                 );
 
                 Property property2 = new Property(
@@ -44,7 +42,7 @@ public class PropertyConfig {
                         "456 Oak Avenue, Suburbia, City",
                         2200.00,
                         LocalDate.of(2025, 9, 15),
-                        landlords.get(1) // Mike Johnson
+                        landlords.get(1)
                 );
 
                 Property property3 = new Property(
@@ -53,7 +51,7 @@ public class PropertyConfig {
                         "789 Elite Boulevard, Uptown, City",
                         4500.00,
                         LocalDate.of(2025, 10, 1),
-                        landlords.get(2) // Sara Williams
+                        landlords.get(2)
                 );
 
                 propertyRepository.saveAll(List.of(property1, property2, property3));
