@@ -57,14 +57,6 @@ public class PropertyService {
         return new PropertyDto(savedProperty);
     }
 
-    // NEW: Save property and return DTO
-//    public PropertyDto savePropertyDto(Property property){
-//        Property savedProperty = saveProperty(property);
-//        return toDto(savedProperty);
-//    }
-
-
-
     public Property updateProperty(Long id, Property propertyDetails){
         Property property = propertyRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Property with id " + id + " does not exist"));
@@ -80,11 +72,7 @@ public class PropertyService {
         return propertyRepository.save(property);
     }
 
-    // NEW: Update property and return DTO
-//    public PropertyDto updatePropertyDto(Long id, Property propertyDetails){
-//        Property updatedProperty = updateProperty(id, propertyDetails);
-//        return toDto(updatedProperty);
-//    }
+
     public PropertyDto updatePropertyDto(Long id, PropertyDto propertyDetailsDto) {
         Property property = propertyRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("Property not found"));

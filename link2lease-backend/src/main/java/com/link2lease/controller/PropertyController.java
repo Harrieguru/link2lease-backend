@@ -48,20 +48,6 @@ public class PropertyController {
     }
 
 
-
-    // Update existing property (return DTO) - FIXED TO RETURN DTO
-//    @PutMapping("/{id}")
-//    public ResponseEntity<?> updateProperty(@PathVariable Long id, @RequestBody Property propertyDetails){
-//        try {
-//            PropertyDto updatedProperty = propertyService.updatePropertyDto(id, propertyDetails);
-//            return ResponseEntity.ok(updatedProperty);
-//        } catch (IllegalStateException e) {
-//            return ResponseEntity.notFound().build();
-//        } catch(IllegalArgumentException e) {
-//            return ResponseEntity.badRequest().body("Error: " + e.getMessage());
-//        }
-//    }
-
     @PutMapping("/{id}")
     public ResponseEntity<PropertyDto> updateProperty(@PathVariable Long id,
                                                       @RequestBody PropertyDto propertyDto) {
