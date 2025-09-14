@@ -14,6 +14,9 @@ public class PropertyDto {
     private String landlordName;
     private String landlordEmail;
 
+    public PropertyDto() {
+    }
+
     public PropertyDto(Property property){
         this.id = property.getId();
         this.title = property.getTitle();
@@ -28,6 +31,7 @@ public class PropertyDto {
         }
     }
 
+    //getters and setters
     public Long getId() { return id; }
     public String getTitle(){ return title; }
     public String getDescription() { return description; }
@@ -37,5 +41,14 @@ public class PropertyDto {
     public String getLandlordName() { return landlordName; }
     public String getLandlordEmail() { return landlordEmail; }
 
+
+    public void setId(Long id) { this.id = id; }
+    public void setTitle(String title) { this.title = title; }
+    public void setDescription(String description) { this.description = description; }
+    public void setAddress(String address) { this.address = address; }
+    public void setRentAmount(double rentAmount) { this.rentAmount = rentAmount; }
+    public void setAvailableFrom(LocalDate availableFrom) { this.availableFrom = availableFrom; }
+    public void setLandlordName(String landlordName) { this.landlordName = landlordName; }
+    public void setLandlordEmail(String landlordEmail) { this.landlordEmail = landlordEmail; }
 
 }

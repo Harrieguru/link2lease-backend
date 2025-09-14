@@ -81,10 +81,34 @@ public class PropertyService {
     }
 
     // NEW: Update property and return DTO
-    public PropertyDto updatePropertyDto(Long id, Property propertyDetails){
-        Property updatedProperty = updateProperty(id, propertyDetails);
-        return toDto(updatedProperty);
+//    public PropertyDto updatePropertyDto(Long id, Property propertyDetails){
+//        Property updatedProperty = updateProperty(id, propertyDetails);
+//        return toDto(updatedProperty);
+//    }
+    public PropertyDto updatePropertyDto(Long id, PropertyDto propertyDetailsDto) {
+        Property property = propertyRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Property not found"));
+
+        property.setTitle(propertyDetailsDto.getTitle());
+        property.setDescription(propertyDetailsDto.getDescription());
+        property.setAddress(propertyDetailsDto.getAddress());
+        property.setRentAmount(propertyDetailsDto.getRentAmount());
+        property.setAvailableFrom(propertyDetailsDto.getAvailableFrom());
+
+        // Now this will work because PropertyDto has getLandlordEmail()
+        if (propertyDetailsDto.getLandlordEmail() != null) {
+            User landlord = userRepository.findUserByEmail(propertyDetailsDto.getLandlordEmail())
+                    .orElseThrow(() -> new IllegalArgumentException("Landlord not found with email: "
+                            + propertyDetailsDto.getLandlordEmail()));
+            property.setLandlord(landlord);
+        } else {
+            throw new IllegalArgumentException("Property must have a landlord email");
+        }
+
+        Property saved = propertyRepository.save(property);
+        return new PropertyDto(saved);
     }
+
 
     public void deleteProperty(Long id){
         boolean exists = propertyRepository.existsById(id);

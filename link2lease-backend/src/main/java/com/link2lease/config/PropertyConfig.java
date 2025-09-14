@@ -22,6 +22,7 @@ public class PropertyConfig {
         return args -> {
             List<User> landlords = userRepository.findAllByRole(UserRole.LANDLORD);
 
+
             if(landlords.isEmpty()){
                 System.out.println("No landlords found. Skipping property creation.");
                 return;

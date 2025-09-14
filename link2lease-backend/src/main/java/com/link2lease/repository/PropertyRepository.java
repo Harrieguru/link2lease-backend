@@ -50,6 +50,4 @@ public interface PropertyRepository extends JpaRepository<Property,Long> {
                                              @Param("maxRent") Double maxRent,
                                              @Param("availableFrom") LocalDate availableFrom);
 
-
-
 }
